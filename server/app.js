@@ -32,3 +32,9 @@ const start = () => {
 };
 
 start();
+// ACCESS_TOKEN_SECRET= ASFASDFASDFAS
+// REFRESH_TOKEN_SECRET=ASDFSADFASF
+// RAZOR_PAY_SECRET=ASDFASDFAFA
+// RAZOR_PAY_KEY_ID=ASDFASDFASDF
+// MONGO_URL= mongodb+srv://riteshkumarnitk21:CBIC8cxq6t485zHu@ekart.rkmvp.mongodb.net/Ekart?retryWrites=true&w=majority&appName=Ekart
+

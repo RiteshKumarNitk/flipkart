@@ -7,8 +7,8 @@ const ItemSchema = new Schema({
 
 const OrderSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  Address: { type: String },
-  DeliveryaDate: { type: Date },
+  address: { type: String },  // Fixed case
+  deliveryDate: { type: Date },  // Fixed typo
   items: { type: [ItemSchema], required: true },
   status: {
     type: String,
@@ -23,8 +23,10 @@ const OrderSchema = new Schema({
     required: true,
   },
   createdAt: { type: Date, default: Date.now },
-  updateAd: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }, // Fixed typo
 });
 
-const Order = mongoose.model("Order", OrderSchema);
-export default Order; // ✅ Default export
+// Prevent model overwrite error
+const Order = mongoose.models.Order || mongoose.model("Order", OrderSchema);
+
+export default Order;

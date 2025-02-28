@@ -25,4 +25,6 @@ const OrderSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updateAd: { type: Date, default: Date.now },
 });
-export const User = mongoose.model("Order", OrderSchema);
+
+const Order = mongoose.model("Order", OrderSchema);
+export default Order; // ✅ Default export

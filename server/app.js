@@ -1,10 +1,16 @@
 import dotenv from "dotenv";
 import express from "express";
-import userRoutes from "./routes/user.js"; // Ensure userRoutes is a default export
-import { getAllCategory } from "./controllers/category.js";
-import { getProductByCategoryId } from "./controllers/product.js";
+import userRoutes from "./routes/user.js"; // Ensure default export
+import categoryRoutes from "./routes/category.js";
+import ProductRoutes from "./routes/product.js";
+import orderRoutes from "./routes/order.js";
+import connectDB from "./config/connect.js";
+import buildadminJS from ""
+
 
 dotenv.config();
+
+const PORT = process.env.PORT || 3000; // ✅ Fallback to 3000 if undefined
 
 const app = express();
 
@@ -13,28 +19,26 @@ app.use(express.json());
 
 // User routes
 app.use("/user", userRoutes);
-app.use("/category", getAllCategory);
-app.use("/product", getProductByCategoryId);
+app.use("/category", categoryRoutes);
+app.use("/product", ProductRoutes);
+app.use("/order", orderRoutes);
 
 // Fallback for unmatched routes
 app.use((req, res) => {
     res.status(404).json({ error: "Route not found" });
 });
 
-const start = () => {
-    app.listen(3000, "0.0.0.0", (err) => {
-        if (err) {
-            console.log("Error starting server:", err);
-        } else {
-            console.log("Server started on http://localhost:3000");
-        }
-    });
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGO_URL);
+        await buildAdminJS(app);
+        app.listen(PORT, () => {
+            console.log(`Server started on http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error("Error connecting to database:", error.message);
+        process.exit(1); // Exit process if DB fails
+    }
 };
 
 start();
-// ACCESS_TOKEN_SECRET= ASFASDFASDFAS
-// REFRESH_TOKEN_SECRET=ASDFSADFASF
-// RAZOR_PAY_SECRET=ASDFASDFAFA
-// RAZOR_PAY_KEY_ID=ASDFASDFASDF
-// MONGO_URL= mongodb+srv://riteshkumarnitk21:CBIC8cxq6t485zHu@ekart.rkmvp.mongodb.net/Ekart?retryWrites=true&w=majority&appName=Ekart
-

@@ -1,25 +1,31 @@
-const getProductByCategoryId = async (req, res) => {
+import Product from "../models/product.js"; // Ensure correct import
 
-    const {categoryId}  = req.params;
+const getProductByCategoryId = async (req, res) => {
+    const { categoryId } = req.params;
+
     try {
-      const products = await Product.find({category: categoryId});
-        if(!products || products.length === 0){
-            return res.status(404).json({message: `No products found for category with id: ${categoryId}`});
+        const products = await Product.find({ category: categoryId }); // Ensure categoryId matches the stored format
+
+        if (!products.length) {
+            return res.status(404).json({
+                message: `No products found for category ID: ${categoryId}`,
+                success: false,
+            });
         }
+
         res.status(200).json({
-          data: products,
-          message: "This is the category route",
-          success: true, 
-        }); 
-  } catch (error) {
-      res.status(500)
-        .json({
-          error: error.message,
-          message: "This is the category route",
-          sucess: false,
-          products,
+            data: products,
+            message: "Products fetched successfully",
+            success: true, 
+        });
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({
+            error: error.message,
+            message: "Server error",
+            success: false,
         });
     }
-  };
-  
-  export { getProductByCategoryId };
+};
+
+export { getProductByCategoryId };
